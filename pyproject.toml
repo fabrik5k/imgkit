@@ -1,0 +1,75 @@
+[project]
+name = "imgkit"
+version = "0.0.1"
+description = "Uma lib python que oferece uma serie de ferramentas para o processamento de imagem"
+authors = [
+    {name = "Fabio Oliveira",email = "fabio.oliveira1403@outlook.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+
+[project.urls]
+repository = "https://github.com/fabrik5k/imgkit"
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+#[project.scripts]
+#imgkit = "imgkit.cli:main_cli"
+
+
+[tool.poetry.dependencies]
+python = ">=3.11,<4.0"
+python-dotenv = "^1.1.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+pytest-cov = "^6.0.0"
+ruff = "^0.9.6"
+taskipy = "^1.14.1"
+sqlfluff = "^3.4.1"
+poetry = "^2.1.3"
+
+[tool.ruff.lint]
+preview = true
+select = [
+    'E',   # pycodestyle
+    'W',   # pycodestyle
+    'F',   # Pyflakes
+    'UP',  # pyupgrade
+    'I',   # isort
+    'B',   # flake8-bugbear
+    'SIM', # flake8-simplify
+    'PL',  # Pylint
+    'PT'   # flake8-pytest-style
+]
+ignore = [
+	'E701',
+  'PLR0917',  # too-many-positional (PLR0917)
+  'PLR0913',  # too-many-arguments (PLR0913)
+]
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.pytest.ini_options]
+pythonpath = "hubtemplate"
+addopts = '-p no:warnings'
+
+[tool.taskipy.tasks]
+lint = 'ruff check . && ruff check . --diff'
+format = 'ruff check . --fix && ruff format .'
+pre_test = 'task lint'
+test = "env $(grep -v '^#' .env | xargs) pytest -qvv -x --cov=./pipeline_bpe"
+post_test = 'coverage html'
+run = "env $(grep -v '^#' .env | xargs) pipeline-bpe"
+dbtdebug = "env $(grep -v '^#' .env | xargs) dbt debug --project-dir ./pipeline_bpe/dbt_project/ --profiles-dir pipeline_bpe/dbt_project"
+dbtdocs = "env $(grep -v '^#' .env | xargs) dbt docs serve --host 0.0.0.0 --port 9090  --project-dir ./pipeline_bpe/dbt_project/ --profiles-dir pipeline_bpe/dbt_project"
+dbt = "env $(grep -v '^#' ../../.env | xargs) dbt"
+htmlcov = 'python -m http.server -d htmlcov 8010'
+publish = "bash -c 'source .env ; poetry publish --build -r sefa2 -u $NEXUS_USER -p $NEXUS_PASS && unset NEXUS_USER NEXUS_PASS'"
