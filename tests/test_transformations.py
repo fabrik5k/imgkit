@@ -15,6 +15,8 @@ class TestExpansaoDePixel:
             (109, 100, 110, 229),
             (110, 100, 110, 110),
             (111, 100, 110, 111),
+            (0, 0, 255, 0),
+            (255, 0, 255, 255),
         ]
     )
     def test_expansao_de_pixel_accept(pixel, limite_L, limite_H, resultado_esperado):
