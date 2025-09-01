@@ -7,7 +7,11 @@ import pandas as pd
 from beartype import beartype
 
 import imgkit.transformations as tfm
+from imgkit.__about__ import __version__
 
+__all__ = [
+    '__version__',
+]
 
 class Imagem:
     """
