@@ -5,8 +5,9 @@ import imgkit.transformations as tfm
 
 
 class TestExpansaoDePixel:
+    @staticmethod
     @pytest.mark.parametrize(
-        "pixel,limite_L,limite_H,resultado_esperado",
+        ("pixel", "limite_L", "limite_H", "resultado_esperado"),
         [
             (99, 100, 110, 99),
             (100, 100, 110, 100),
@@ -16,12 +17,13 @@ class TestExpansaoDePixel:
             (111, 100, 110, 111),
         ]
     )
-    def test_expansao_de_pixel_accept(self, pixel, limite_L, limite_H, resultado_esperado):
+    def test_expansao_de_pixel_accept(pixel, limite_L, limite_H, resultado_esperado):
         resultado = tfm.expansao_de_pixel(pixel, limite_L, limite_H)
         assert resultado_esperado == resultado
 
+    @staticmethod
     @pytest.mark.parametrize(
-        "pixel,limite_L,limite_H",
+        ("pixel", "limite_L", "limite_H"),
         [
             ("99", 100, 110),
             (100, 100.0, 110),
@@ -29,13 +31,13 @@ class TestExpansaoDePixel:
             (109, 100, [110]),
         ]
     )
-    def test_expansao_de_pixel_raise_type_error(self, pixel, limite_L, limite_H):
+    def test_expansao_de_pixel_raise_type_error(pixel, limite_L, limite_H):
         with pytest.raises(BeartypeCallHintParamViolation):
-            resultado = tfm.expansao_de_pixel(pixel, limite_L, limite_H)
-            _ = resultado
+            tfm.expansao_de_pixel(pixel, limite_L, limite_H)
 
+    @staticmethod
     @pytest.mark.parametrize(
-        "pixel,limite_L,limite_H,msg",
+        ("pixel", "limite_L", "limite_H", "msg"),
         [
             (-1, 100, 110, r"range 0 to 255.*-1"),
             (256, 100, 110, r"range 0 to 255.*256"),
@@ -51,7 +53,6 @@ class TestExpansaoDePixel:
             (101, 111, 110, r"must be strictly less.*received.*111.*110"),
         ]
     )
-    def test_expansao_de_pixel_raise_value_error(self, pixel, limite_L, limite_H, msg):
+    def test_expansao_de_pixel_raise_value_error(pixel, limite_L, limite_H, msg):
         with pytest.raises(ValueError, match=msg):
-            resultado = tfm.expansao_de_pixel(pixel, limite_L, limite_H)
-            _ = resultado
+            tfm.expansao_de_pixel(pixel, limite_L, limite_H)
