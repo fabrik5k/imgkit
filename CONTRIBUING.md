@@ -34,22 +34,19 @@ To execute tasks:
 
 ```bash
 # Run lint
-poetry run task lint
+task lint
 
 # Auto-format
-poetry run task format
+task format
 
 # Run the application
-poetry run task run
+task run
 
 # Run tests (includes lint pre-check)
-poetry run task test
-
-# Generate coverage report
-poetry run task post_test
+task test
 
 # Serve coverage report locally
-poetry run task htmlcov
+task htmlcov
 ```
 
 ## Pull Requests
