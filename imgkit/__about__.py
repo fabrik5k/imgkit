@@ -8,4 +8,3 @@ try:
 except PackageNotFoundError:
     print('Package not found!!')
     __version__ = '0.0.0'
-
