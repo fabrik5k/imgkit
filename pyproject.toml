@@ -69,12 +69,10 @@ addopts = '-p no:warnings'
 [tool.taskipy.tasks]
 lint = 'ruff check . && ruff check . --diff'
 format = 'ruff check . --fix && ruff format .'
+run = "env $(grep -v '^#' .env | xargs) imgkit"
 pre_test = 'task lint'
-test = "env $(grep -v '^#' .env | xargs) pytest -qvv -x --cov=./pipeline_bpe"
+test = "env $(grep -v '^#' .env | xargs) pytest -qvv -x --cov=./imgkit"
 post_test = 'coverage html'
-run = "env $(grep -v '^#' .env | xargs) pipeline-bpe"
-dbtdebug = "env $(grep -v '^#' .env | xargs) dbt debug --project-dir ./pipeline_bpe/dbt_project/ --profiles-dir pipeline_bpe/dbt_project"
-dbtdocs = "env $(grep -v '^#' .env | xargs) dbt docs serve --host 0.0.0.0 --port 9090  --project-dir ./pipeline_bpe/dbt_project/ --profiles-dir pipeline_bpe/dbt_project"
-dbt = "env $(grep -v '^#' ../../.env | xargs) dbt"
 htmlcov = 'python -m http.server -d htmlcov 8010'
-publish = "bash -c 'source .env ; poetry publish --build -r sefa2 -u $NEXUS_USER -p $NEXUS_PASS && unset NEXUS_USER NEXUS_PASS'"
+pre_publish ='rm -rf build/ dist/ ; python -m build'
+publish = ""
