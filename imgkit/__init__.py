@@ -13,6 +13,7 @@ __all__ = [
     '__version__',
 ]
 
+
 class Imagem:
     """
     Classe feita para operações básicas de imagem da disciplina de Processamento
