@@ -6,7 +6,7 @@ authors = [
     {name = "Fabio Oliveira",email = "fabio.oliveira1403@outlook.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.8,<4.0"
+requires-python = ">=3.9,<4.0"
 
 [project.urls]
 repository = "https://github.com/fabrik5k/imgkit"
@@ -22,7 +22,7 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4.0"
+python = ">=3.9,<4.0"
 python-dotenv = "^1.1.1"
 numpy = ">=2,<2.3.0"
 matplotlib = "^3.10.6"
