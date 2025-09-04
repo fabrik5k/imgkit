@@ -6,8 +6,12 @@ import numpy as np
 import pandas as pd
 from beartype import beartype
 
-import imgkit.transformations as tfm
-from imgkit.__about__ import __version__
+import pictokit.transformations as tfm
+from pictokit.__about__ import __version__
+
+__all__ = [
+    '__version__',
+]
 
 __all__ = [
     '__version__',
