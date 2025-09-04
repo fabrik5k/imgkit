@@ -74,6 +74,5 @@ pre_test = 'task lint'
 test = "env $(grep -v '^#' .env | xargs) pytest -qvv -x --cov=./src/pictokit"
 post_test = 'coverage html'
 htmlcov = 'python -m http.server -d htmlcov 8010'
-pre_publish ='rm -rf build/ dist/ ; python -m build'
-publish_test = "poetry publish --build -r testpypi"
-publish = "poetry publish --build"
+publish_test = "rm -rf build/ dist/ ; poetry publish --build -r testpypi -n"
+publish = "rm -rf dist ; poetry publish --build -n"
