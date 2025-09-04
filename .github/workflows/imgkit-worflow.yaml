@@ -24,6 +24,7 @@ jobs:
 
       - name: lint
         run: |
+          pip install poetry
           poetry install
           poetry env activate
           task lint
