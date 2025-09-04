@@ -75,4 +75,5 @@ test = "env $(grep -v '^#' .env | xargs) pytest -qvv -x --cov=./src/pictokit"
 post_test = 'coverage html'
 htmlcov = 'python -m http.server -d htmlcov 8010'
 pre_publish ='rm -rf build/ dist/ ; python -m build'
-publish = ""
+publish_test = "poetry publish --build -r testpypi"
+publish = "poetry publish --build"
