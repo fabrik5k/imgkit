@@ -1,0 +1,34 @@
+name: imgkit-workflow
+on:
+  push:
+    branches:
+      - 'dev'
+  pull_request:
+    branches:
+      - 'v*'
+
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.11, 3.12, 3.13]   # versões que você quer rodar
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: lint
+        run: |
+          poetry install
+          poetry env activate
+          task lint
+
+      - name: test
+        run: |
+          poetry env activate
+          task test
