@@ -26,10 +26,10 @@ jobs:
         run: |
           pip install poetry
           poetry install
-          poetry env activate
+          eval "$(poetry env activate)"
           task lint
 
       - name: test
         run: |
-          poetry env activate
+          eval "$(poetry env activate)"
           task test
