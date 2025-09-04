@@ -1,6 +1,6 @@
 [project]
 name = "pictokit"
-version = "0.0.1"
+version = "0.0.1.dev0"
 description = "Uma lib python que oferece uma serie de ferramentas para o processamento de imagem"
 authors = [
     {name = "Fabio Oliveira",email = "fabio.oliveira1403@outlook.com"}
