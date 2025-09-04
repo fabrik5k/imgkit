@@ -71,7 +71,7 @@ lint = 'ruff check . && ruff check . --diff'
 format = 'ruff check . --fix && ruff format .'
 run = "env $(grep -v '^#' .env | xargs) pictokit"
 pre_test = 'task lint'
-test = "env $(grep -v '^#' .env | xargs) pytest -qvv -x --cov=./pictokit"
+test = "env $(grep -v '^#' .env | xargs) pytest -qvv -x --cov=./src/pictokit"
 post_test = 'coverage html'
 htmlcov = 'python -m http.server -d htmlcov 8010'
 pre_publish ='rm -rf build/ dist/ ; python -m build'
