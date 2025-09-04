@@ -1,1 +1,1 @@
-#imgkit
+#pictokit

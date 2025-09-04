@@ -1,7 +1,7 @@
 import pytest
 from beartype.roar import BeartypeCallHintParamViolation
 
-import imgkit.transformations as tfm
+import pictokit.transformations as tfm
 
 
 class TestExpansaoDePixel:

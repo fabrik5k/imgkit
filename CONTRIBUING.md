@@ -1,4 +1,4 @@
-# Contributing imgkit
+# Contributing pictokit
 
 Thank you for considering contributing to this project!
 
@@ -9,8 +9,8 @@ This project was initially designed to use **Poetry** and **Python 3.11**, but i
 Clone the repository and install dependencies with:
 
 ```bash
-git clone https://github.com/fabrik5k/imgkit.git
-cd imgkit
+git clone https://github.com/fabrik5k/pictokit.git
+cd pictokit
 poetry install
 ```
 

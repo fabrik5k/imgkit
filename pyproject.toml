@@ -1,5 +1,5 @@
 [project]
-name = "imgkit"
+name = "pictokit"
 version = "0.0.1"
 description = "Uma lib python que oferece uma serie de ferramentas para o processamento de imagem"
 authors = [
@@ -9,7 +9,7 @@ readme = "README.md"
 requires-python = ">=3.10,<4.0"
 
 [project.urls]
-repository = "https://github.com/fabrik5k/imgkit"
+repository = "https://github.com/fabrik5k/pictokit"
 
 
 [build-system]
@@ -18,7 +18,7 @@ build-backend = "poetry.core.masonry.api"
 
 
 #[project.scripts]
-#imgkit = "imgkit.cli:main_cli"
+#pictokit = "pictokit.cli:main_cli"
 
 
 [tool.poetry.dependencies]
@@ -69,9 +69,9 @@ addopts = '-p no:warnings'
 [tool.taskipy.tasks]
 lint = 'ruff check . && ruff check . --diff'
 format = 'ruff check . --fix && ruff format .'
-run = "env $(grep -v '^#' .env | xargs) imgkit"
+run = "env $(grep -v '^#' .env | xargs) pictokit"
 pre_test = 'task lint'
-test = "env $(grep -v '^#' .env | xargs) pytest -qvv -x --cov=./imgkit"
+test = "env $(grep -v '^#' .env | xargs) pytest -qvv -x --cov=./pictokit"
 post_test = 'coverage html'
 htmlcov = 'python -m http.server -d htmlcov 8010'
 pre_publish ='rm -rf build/ dist/ ; python -m build'
