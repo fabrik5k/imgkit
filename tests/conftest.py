@@ -1,6 +1,6 @@
 import pytest
 
-from tests.utils import gerar_imagem_aleatoria
+from pictokit.utils import gerar_imagem_aleatoria
 
 
 @pytest.fixture
