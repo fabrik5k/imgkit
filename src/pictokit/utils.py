@@ -3,6 +3,12 @@ from typing import Literal
 import numpy as np
 from beartype import beartype
 
+GREY_SCALE_DIM = 2
+GREY_SCALE_CHANNEL_DIM = 1
+RGB_DIM = 3
+RGB_CHANNEL_DIM = 3
+PIXEL_LOWER_LIMIT = 0
+PIXEL_UPPER_LIMIT = 255
 
 @beartype
 def gerar_imagem_aleatoria(x: int, y: int,
@@ -35,3 +41,22 @@ def gerar_imagem_aleatoria(x: int, y: int,
         return rng.integers(0, high, size=(x, y), dtype=np.uint8)
     else:
         return rng.integers(0, high, size=(x, y, 3), dtype=np.uint8)
+def imgarray_validation(img_arr: np.ndarray) -> bool:
+        """
+        Validate if the provided NumPy array is a valid image.
+
+        Conditions:
+        - Must be a numpy.ndarray
+        - dtype must be uint8
+        - Shape must be (H, W) for grayscale or (H, W, 3) for color
+        """
+        if img_arr.dtype != np.uint8:
+            raise TypeError(f"img_arr must have dtype uint8, got {img_arr.dtype}.")
+
+        if img_arr.ndim == GREY_SCALE_DIM or img_arr.ndim == RGB_DIM and img_arr.shape[2] == RGB_CHANNEL_DIM:
+            return True
+        else:
+            raise ValueError(
+                f"img_arr has invalid shape {img_arr.shape}. "
+                "Expected (H, W) for grayscale or (H, W, 3) for color."
+            )

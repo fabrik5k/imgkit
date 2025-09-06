@@ -8,10 +8,12 @@ from beartype import beartype
 
 import pictokit.transformations as tfm
 from pictokit.__about__ import __version__
+from pictokit.utils import imgarray_validation
 
 __all__ = [
     '__version__',
 ]
+
 
 class Imagem:
     """
@@ -20,17 +22,27 @@ class Imagem:
     """
 
     @beartype
-    def __init__(self, caminho) -> None:
+    def __init__(
+        self, caminho: str | None = None, img_arr: np.ndarray | None = None
+    ) -> None:
         """
         Inicializa uma nova instância imagem.
 
         Args:
             caminho (str): Caminho do arquivo da imagem.
         """
-        img = cv2.imread(caminho)
+        if caminho is not None:
+            img = cv2.imread(caminho)
+        elif img_arr is not None:
+            imgarray_validation(img_arr)
+            img = img_arr
+        else:
+            raise ValueError("Either 'caminho' or 'img_arr' must be provided.")
 
         if img is None:
-            raise ValueError('Imagem inválida: valor None recebido')
+            raise ValueError(
+                f'Failed to load image from path: {caminho}. Load {type(img)}'
+            )
 
         self.img = img
         self.img1d = np.reshape(self.img, -1)
