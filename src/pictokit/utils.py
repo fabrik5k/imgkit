@@ -42,21 +42,21 @@ def gerar_imagem_aleatoria(x: int, y: int,
     else:
         return rng.integers(0, high, size=(x, y, 3), dtype=np.uint8)
 def imgarray_validation(img_arr: np.ndarray) -> bool:
-        """
-        Validate if the provided NumPy array is a valid image.
+    """
+    Validate if the provided NumPy array is a valid image.
 
-        Conditions:
-        - Must be a numpy.ndarray
-        - dtype must be uint8
-        - Shape must be (H, W) for grayscale or (H, W, 3) for color
-        """
-        if img_arr.dtype != np.uint8:
-            raise TypeError(f"img_arr must have dtype uint8, got {img_arr.dtype}.")
+    Conditions:
+    - Must be a numpy.ndarray
+    - dtype must be uint8
+    - Shape must be (H, W) for grayscale or (H, W, 3) for color
+    """
+    if img_arr.dtype != np.uint8:
+        raise TypeError(f"img_arr must have dtype uint8, got {img_arr.dtype}.")
 
-        if img_arr.ndim == GREY_SCALE_DIM or img_arr.ndim == RGB_DIM and img_arr.shape[2] == RGB_CHANNEL_DIM:
-            return True
-        else:
-            raise ValueError(
-                f"img_arr has invalid shape {img_arr.shape}. "
-                "Expected (H, W) for grayscale or (H, W, 3) for color."
-            )
+    if img_arr.ndim == GREY_SCALE_DIM or img_arr.ndim == RGB_DIM and img_arr.shape[2] == RGB_CHANNELS:
+        return True
+    else:
+        raise ValueError(
+            f"img_arr has invalid shape {img_arr.shape}. "
+            "Expected (H, W) for grayscale or (H, W, 3) for color."
+        )
