@@ -3,12 +3,12 @@ from typing import Literal
 import numpy as np
 from beartype import beartype
 
-GREY_SCALE_DIM = 2
-GREY_SCALE_CHANNEL_DIM = 1
-RGB_DIM = 3
-RGB_CHANNEL_DIM = 3
-PIXEL_LOWER_LIMIT = 0
-PIXEL_UPPER_LIMIT = 255
+from pictokit.constants import (
+    PIXEL_MIN,
+    PIXEL_MAX,
+    GREY_SCALE_CHANNEL_DIM,
+    RGB_CHANNELS,
+)
 
 @beartype
 def gerar_imagem_aleatoria(x: int, y: int,
