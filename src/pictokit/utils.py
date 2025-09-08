@@ -11,10 +11,13 @@ from pictokit.constants import (
 )
 
 @beartype
-def gerar_imagem_aleatoria(x: int, y: int,
-                           channels: Literal[1, 3] = 3,
-                           max_value: int | None = None,
-                           seed: int | None = None) -> np.ndarray:
+def gerar_imagem_aleatoria(
+    x: int,
+    y: int,
+    channels: Literal[1, 3] = 3,
+    max_value: int | None = None,
+    seed: int | None = None,
+) -> np.ndarray:
     """
     Gera um array aleatório que se comporta como imagem, sempre no formato uint8.
 
@@ -32,31 +35,23 @@ def gerar_imagem_aleatoria(x: int, y: int,
     Returns:
         np.ndarray: Imagem aleatória no formato uint8.
     """
+    if max_value is not None:
+        if not (max_value >= PIXEL_MIN + 1 and max_value <= PIXEL_MAX):
+            raise ValueError(
+                f'max_value must be between {PIXEL_MIN + 1} and {PIXEL_MAX}'
+                f', but got {max_value}'
+            )
+        high = max_value
+    else:
+        high = 256
+
+    if not (x > 0 and y > 0):
+        raise ValueError(f'x and y must be greater then 0, but x={x} y={y}')
+
     rng = np.random.default_rng(seed)
 
-    # teto permitido (0..255); se max_value vier, respeita o teto
-    high = 256 if max_value is None else int(min(255, max(0, max_value))) + 1
-
-    if channels == 1:
+    if channels == GREY_SCALE_CHANNEL_DIM:
         return rng.integers(0, high, size=(x, y), dtype=np.uint8)
     else:
-        return rng.integers(0, high, size=(x, y, 3), dtype=np.uint8)
-def imgarray_validation(img_arr: np.ndarray) -> bool:
-    """
-    Validate if the provided NumPy array is a valid image.
+        return rng.integers(0, high, size=(x, y, RGB_CHANNELS), dtype=np.uint8)
 
-    Conditions:
-    - Must be a numpy.ndarray
-    - dtype must be uint8
-    - Shape must be (H, W) for grayscale or (H, W, 3) for color
-    """
-    if img_arr.dtype != np.uint8:
-        raise TypeError(f"img_arr must have dtype uint8, got {img_arr.dtype}.")
-
-    if img_arr.ndim == GREY_SCALE_DIM or img_arr.ndim == RGB_DIM and img_arr.shape[2] == RGB_CHANNELS:
-        return True
-    else:
-        raise ValueError(
-            f"img_arr has invalid shape {img_arr.shape}. "
-            "Expected (H, W) for grayscale or (H, W, 3) for color."
-        )
