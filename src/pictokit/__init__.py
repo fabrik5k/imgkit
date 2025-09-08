@@ -23,7 +23,10 @@ class Imagem:
 
     @beartype
     def __init__(
-        self, caminho: str | None = None, img_arr: np.ndarray | None = None, mode: Mode = 'any'
+        self,
+        caminho: str | None = None,
+        img_arr: np.ndarray | None = None,
+        mode: Mode = 'any',
     ) -> None:
         """
         Inicializa uma nova instância imagem.
