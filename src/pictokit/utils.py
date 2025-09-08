@@ -4,11 +4,12 @@ import numpy as np
 from beartype import beartype
 
 from pictokit.constants import (
-    PIXEL_MIN,
-    PIXEL_MAX,
     GREY_SCALE_CHANNEL_DIM,
+    PIXEL_MAX,
+    PIXEL_MIN,
     RGB_CHANNELS,
 )
+
 
 @beartype
 def gerar_imagem_aleatoria(
@@ -54,4 +55,3 @@ def gerar_imagem_aleatoria(
         return rng.integers(0, high, size=(x, y), dtype=np.uint8)
     else:
         return rng.integers(0, high, size=(x, y, RGB_CHANNELS), dtype=np.uint8)
-

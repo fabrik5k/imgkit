@@ -1,5 +1,5 @@
-import pytest
 import numpy as np
+import pytest
 
 from pictokit.utils import gerar_imagem_aleatoria
 

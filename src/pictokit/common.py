@@ -1,7 +1,8 @@
-from beartype import beartype
 import numpy as np
+from beartype import beartype
 
 from pictokit.constants import GREY_SCALE_DIM, RGB_CHANNELS, RGB_DIM, Mode
+
 
 @beartype
 def validate_imgarray(img_arr: np.ndarray, mode: Mode = "any") -> np.ndarray:

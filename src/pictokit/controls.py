@@ -1,11 +1,12 @@
 from typing import Literal
 
-from beartype import beartype
 import cv2
 import numpy as np
+from beartype import beartype
 
 from pictokit.common import validate_imgarray
 from pictokit.constants import GREY_SCALE_DIM
+
 
 @beartype
 def load_image(

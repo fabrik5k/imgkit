@@ -1,15 +1,14 @@
 from typing import Literal
 
-import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from beartype import beartype
 
-from pictokit.controls import load_image
-from pictokit.constants import Mode
 import pictokit.transformations as tfm
 from pictokit.__about__ import __version__
+from pictokit.constants import Mode
+from pictokit.controls import load_image
 
 __all__ = [
     '__version__',

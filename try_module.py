@@ -1,9 +1,8 @@
-from pictokit import Imagem
-from pictokit.utils import gerar_imagem_aleatoria
+from pictokit.common import validate_imgarray
 
 ###############################################
 # Gerando imagem pra testes
-arr = gerar_imagem_aleatoria(x=0, y=1, channels=1, max_value=1)
+arr = validate_imgarray(img_arr='asd')
 
 print(arr)
 ###############################################
