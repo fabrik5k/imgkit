@@ -1,7 +1,9 @@
-from pictokit.transformations import expansao_de_pixel
+from pictokit import Imagem
+from pictokit.utils import gerar_imagem_aleatoria
 
-pixels = [255]
-resultado = [expansao_de_pixel(pixel, 0, 255) for pixel in pixels]
+###############################################
+# Gerando imagem pra testes
+arr = gerar_imagem_aleatoria(x=0, y=1, channels=1, max_value=1)
 
-print(pixels)
-print(resultado)
+print(arr)
+###############################################
