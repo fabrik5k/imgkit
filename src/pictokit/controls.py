@@ -12,7 +12,7 @@ from pictokit.constants import GREY_SCALE_DIM
 def load_image(
     caminho: str | None = None,
     img_arr: np.ndarray | None = None,
-    mode: Literal["gray", "color", "any"] = "any",
+    mode: Literal['gray', 'color', 'any'] = 'any',
     auto_convert: bool = True,
 ) -> np.ndarray:
     """Load and validate an image from either a file path or a NumPy array.
