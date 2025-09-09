@@ -1,6 +1,5 @@
 from typing import Literal
 
-import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -8,10 +7,13 @@ from beartype import beartype
 
 import pictokit.transformations as tfm
 from pictokit.__about__ import __version__
+from pictokit.constants import Mode
+from pictokit.controls import load_image
 
 __all__ = [
     '__version__',
 ]
+
 
 class Imagem:
     """
@@ -20,17 +22,19 @@ class Imagem:
     """
 
     @beartype
-    def __init__(self, caminho) -> None:
+    def __init__(
+        self,
+        caminho: str | None = None,
+        img_arr: np.ndarray | None = None,
+        mode: Mode = 'any',
+    ) -> None:
         """
         Inicializa uma nova instância imagem.
 
         Args:
             caminho (str): Caminho do arquivo da imagem.
         """
-        img = cv2.imread(caminho)
-
-        if img is None:
-            raise ValueError('Imagem inválida: valor None recebido')
+        img = load_image(caminho, img_arr, mode)
 
         self.img = img
         self.img1d = np.reshape(self.img, -1)
