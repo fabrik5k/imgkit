@@ -17,13 +17,14 @@ def load_image(
 ) -> np.ndarray:
     """Load and validate an image from either a file path or a NumPy array.
 
-    Exactly one of `caminho` or `img_arr` must be provided.  
-    If `caminho` is given, the image will be read with OpenCV (`cv2.imread`).  
-    If `img_arr` is given, it will be validated directly.  
+    Exactly one of `caminho` or `img_arr` must be provided.
+    If `caminho` is given, the image will be read with OpenCV (`cv2.imread`).
+    If `img_arr` is given, it will be validated directly.
 
     Args:
         caminho (str | None): Path to the image file. Mutually exclusive with `img_arr`.
-        img_arr (np.ndarray | None): Image array to validate. Mutually exclusive with `caminho`.
+        img_arr (np.ndarray | None): Image array to validate. Mutually exclusive with
+            `caminho`.
         mode (Literal["gray", "color", "any"]): Expected image type.
             - "gray": grayscale only (shape `(H, W)`).
             - "color": color only (shape `(H, W, 3)`).
@@ -48,27 +49,32 @@ def load_image(
         raise ValueError("Provide exactly one of 'caminho' or 'img_arr'.")
 
     if caminho is not None:
-
-        if mode == "gray":
+        if mode == 'gray':
             flag = cv2.IMREAD_GRAYSCALE
-        elif mode == "color":
+        elif mode == 'color':
             flag = cv2.IMREAD_COLOR
         else:
             flag = cv2.IMREAD_UNCHANGED
 
         img = cv2.imread(caminho, flag)
         if img is None:
-            raise FileNotFoundError(f"Could not read image from path: {caminho}")
+            raise FileNotFoundError(f'Could not read image from path: {caminho}')
 
-        if mode == "color" and img.ndim == GREY_SCALE_DIM and auto_convert:
+        if mode == 'color' and img.ndim == GREY_SCALE_DIM and auto_convert:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
         return validate_imgarray(img, mode=mode)
 
-    img = validate_imgarray(img_arr, mode=mode) # Pyright error is a False Positive
+    img = validate_imgarray(img_arr, mode="any")  # aceita tanto gray quanto color
 
-    if mode == "color" and img.ndim == GREY_SCALE_DIM and auto_convert:
-        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    if mode == "color":
+        if img.ndim == GREY_SCALE_DIM and auto_convert:
+            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        # garante que no fim é válido como "color"
         img = validate_imgarray(img, mode="color")
 
+    elif mode == "gray":
+        img = validate_imgarray(img, mode="gray")
+
+    # se mode == "any", já está validado
     return img
