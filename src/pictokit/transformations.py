@@ -4,41 +4,39 @@ from pictokit.constants import PIXEL_MAX, PIXEL_MIN
 
 
 @beartype
-def expansao_de_pixel(pixel: int, limite_L: int, limite_H: int) -> int:
+def pixel_expansion(pixel: int, low_limit: int, high_limit: int) -> int:
     """
-    Aplica uma transformação de expansão de contraste em um pixel,
-    mapeando valores dentro de um intervalo [limite_L, limite_H] para o
-    intervalo [0, 255].
+    Applies a contrast expansion transformation to a pixel by mapping values
+    within a given range [low_limit, high_limit] to the full range [0, 255].
 
-    Se o valor do `pixel` estiver dentro do intervalo definido por
-    (`limite_L`, `limite_H`), o valor é reescalonado linearmente para o
-    intervalo [0, 255]. Caso contrário, o pixel é retornado sem alteração.
-
-    Além disso, são realizadas validações nos parâmetros:
-      - `pixel`, `limite_L` e `limite_H` devem estar no intervalo [0, 255].
-      - `limite_L` deve ser estritamente menor que `limite_H`.
+    If the `pixel` value falls within the specified interval, it is linearly
+    rescaled to [0, 255]. Otherwise, the pixel value is returned unchanged.
 
     Args:
-        pixel (int): Valor do pixel (0–255).
-        limite_L (int): Limite inferior do intervalo (0–255).
-        limite_H (int): Limite superior do intervalo (0–255).
+        pixel (int): Pixel value (0–255).
+        low_limit (int): Lower bound of the intensity range (0–255).
+        high_limit (int): Upper bound of the intensity range (0–255).
 
     Returns:
-        int: Valor transformado do pixel no intervalo [0, 255].
+        int: The transformed pixel value in the range [0, 255].
+
+    Raises:
+        ValueError: If `pixel`, `low_limit`, or `high_limit` are outside the range [0, 255],
+            or if `low_limit >= high_limit`.
     """
-    args = {'pixel': pixel, 'limite_L': limite_L, 'limite_H': limite_H}
+    args = {'pixel': pixel, 'low_limit': low_limit, 'high_limit': high_limit}
     for name, value in args.items():
         if not (PIXEL_MIN <= value <= PIXEL_MAX):
             raise ValueError(
                 f'Expected {name} to be in the range 0 to 255, but received {value}'
             )
-    if limite_L >= limite_H:
+    if low_limit >= high_limit:
         raise ValueError(
             f'Lower limit must be strictly less than upper limit, '
-            f'but received limite_L={limite_L}, limite_H={limite_H}'
+            f'but received low_limit={low_limit}, high_limit={high_limit}'
         )
-    if pixel > limite_L and pixel < limite_H:
-        result = 255 / (limite_H - limite_L) * (pixel - limite_L)
+    if pixel > low_limit and pixel < high_limit:
+        result = 255 / (high_limit - low_limit) * (pixel - low_limit)
     else:
         result = pixel
 
