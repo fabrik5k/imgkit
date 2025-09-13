@@ -118,7 +118,7 @@ class Imagem:
         Returns:
             None
         """
-        fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+        _, axs = plt.subplots(1, 2, figsize=(10, 5))
 
         axs[0].imshow(self.img, cmap='gray')
         axs[0].set_title('Original')

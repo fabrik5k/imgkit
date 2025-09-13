@@ -65,16 +65,16 @@ def load_image(
 
         return validate_imgarray(img, mode=mode)
 
-    img = validate_imgarray(img_arr, mode="any")  # aceita tanto gray quanto color
+    img = validate_imgarray(img_arr, mode='any')  # aceita tanto gray quanto color
 
-    if mode == "color":
+    if mode == 'color':
         if img.ndim == GREY_SCALE_DIM and auto_convert:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         # garante que no fim é válido como "color"
-        img = validate_imgarray(img, mode="color")
+        img = validate_imgarray(img, mode='color')
 
-    elif mode == "gray":
-        img = validate_imgarray(img, mode="gray")
+    elif mode == 'gray':
+        img = validate_imgarray(img, mode='gray')
 
     # se mode == "any", já está validado
     return img
