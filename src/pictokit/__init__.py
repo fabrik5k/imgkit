@@ -31,13 +31,14 @@ class Image:
         Initializes a new image instance.
 
         Args:
-            path (Optional[str]): Filesystem path to the image file. Used to load the image from disk.
+            path (Optional[str]): Filesystem path to the image file. Used to load the
+                image from disk.
             img_arr (Optional[np.ndarray]): In-memory image array.
                 Expected shapes:
                 - (H, W) for grayscale
                 - (H, W, C) for color, where C ∈ {3}
                 Typical dtype: uint8.
-            mode (Mode | str): Input policy for validation/conversion. Defaults to `'any'`.
+            mode (Mode | str): Input policy for validation/conversion. Defaults `'any'`
                 Options:
                 - `'any'`: Accept input as-is (no forced conversion).
                 - `'gray'`: Ensure grayscale; color inputs are converted.
@@ -45,8 +46,8 @@ class Image:
 
         Raises:
             FileNotFoundError: If `path` is provided and the file does not exist.
-            ValueError: If neither `path` nor `img_arr` is provided, if `mode` is invalid,
-                or if `img_arr` has an unsupported shape/dtype.
+            ValueError: If neither `path` nor `img_arr` is provided, if `mode` is
+                invalid, or if `img_arr` has an unsupported shape/dtype.
         """
         img = load_image(path, img_arr, mode)
 
@@ -95,19 +96,21 @@ class Image:
         Args:
             low_limit (int): Lower bound of the pixel intensity range.
             high_limit (int): Upper bound of the pixel intensity range.
-            hist (bool, optional): If True, displays the histogram of the transformed image.
+            hist (bool, optional): If True, displays the histogram of the transformed
+                image.
                 Defaults to False.
 
         Attributes:
-            transform (np.ndarray): The image resulting from a transformation applied to the instance.
+            transform (np.ndarray): The image resulting from a transformation applied
+                to the instance.
             transform1d (np.ndarray): 1D array representation of the transformed image.
 
         Returns:
             None
 
         Raises:
-            ValueError: If `low_limit` or `high_limit` are outside the valid pixel intensity range (0–255),
-                or if `low_limit >= high_limit`.
+            ValueError: If `low_limit` or `high_limit` are outside the valid pixel
+                intensity range (0–255), or if `low_limit >= high_limit`.
         """
         aux_arr = []
 

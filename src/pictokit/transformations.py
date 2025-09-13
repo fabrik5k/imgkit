@@ -21,8 +21,8 @@ def pixel_expansion(pixel: int, low_limit: int, high_limit: int) -> int:
         int: The transformed pixel value in the range [0, 255].
 
     Raises:
-        ValueError: If `pixel`, `low_limit`, or `high_limit` are outside the range [0, 255],
-            or if `low_limit >= high_limit`.
+        ValueError: If `pixel`, `low_limit`, or `high_limit` are outside the
+            range [0, 255], or if `low_limit >= high_limit`.
     """
     args = {'pixel': pixel, 'low_limit': low_limit, 'high_limit': high_limit}
     for name, value in args.items():
