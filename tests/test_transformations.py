@@ -7,7 +7,7 @@ import pictokit.transformations as tfm
 class TestExpansaoDePixel:
     @staticmethod
     @pytest.mark.parametrize(
-        ('pixel', 'limite_L', 'limite_H', 'resultado_esperado'),
+        ('pixel', 'low_limit', 'high_limit', 'expect_result'),
         [
             (99, 100, 110, 99),
             (100, 100, 110, 100),
@@ -19,13 +19,13 @@ class TestExpansaoDePixel:
             (255, 0, 255, 255),
         ],
     )
-    def test_expansao_de_pixel_accept(pixel, limite_L, limite_H, resultado_esperado):
-        resultado = tfm.expansao_de_pixel(pixel, limite_L, limite_H)
-        assert resultado_esperado == resultado
+    def test_pixel_expansion_accept(pixel, low_limit, high_limit, expect_result):
+        resultado = tfm.pixel_expansion(pixel, low_limit, high_limit)
+        assert expect_result == resultado
 
     @staticmethod
     @pytest.mark.parametrize(
-        ('pixel', 'limite_L', 'limite_H'),
+        ('pixel', 'low_limit', 'high_limit'),
         [
             ('99', 100, 110),
             (100, 100.0, 110),
@@ -33,13 +33,13 @@ class TestExpansaoDePixel:
             (109, 100, [110]),
         ],
     )
-    def test_expansao_de_pixel_raise_type_error(pixel, limite_L, limite_H):
+    def test_pixel_expansion_raise_type_error(pixel, low_limit, high_limit):
         with pytest.raises(BeartypeCallHintParamViolation):
-            tfm.expansao_de_pixel(pixel, limite_L, limite_H)
+            tfm.pixel_expansion(pixel, low_limit, high_limit)
 
     @staticmethod
     @pytest.mark.parametrize(
-        ('pixel', 'limite_L', 'limite_H', 'msg'),
+        ('pixel', 'low_limit', 'high_limit', 'msg'),
         [
             (-1, 100, 110, r'range 0 to 255.*-1'),
             (256, 100, 110, r'range 0 to 255.*256'),
@@ -52,6 +52,6 @@ class TestExpansaoDePixel:
             (101, 111, 110, r'must be strictly less.*received.*111.*110'),
         ],
     )
-    def test_expansao_de_pixel_raise_value_error(pixel, limite_L, limite_H, msg):
+    def test_pixel_expansion_raise_value_error(pixel, low_limit, high_limit, msg):
         with pytest.raises(ValueError, match=msg):
-            tfm.expansao_de_pixel(pixel, limite_L, limite_H)
+            tfm.pixel_expansion(pixel, low_limit, high_limit)
