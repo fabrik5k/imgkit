@@ -37,6 +37,7 @@ class Imagem:
         img = load_image(caminho, img_arr, mode)
 
         self.img = img
+        self.img_shape = img.shape
         self.img1d = np.reshape(self.img, -1)
         self.transformacao = np.array([])
         self.transformacao1d = np.array([])
@@ -97,7 +98,7 @@ class Imagem:
 
         img_transform = np.array(aux_arr)
 
-        self.transformacao = np.reshape(img_transform, (256, 256, 3))
+        self.transformacao = np.reshape(img_transform, self.img_shape)
         self.transformacao1d = np.array(aux_arr)
 
         if hist:
@@ -117,7 +118,7 @@ class Imagem:
         Returns:
             None
         """
-        fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+        _, axs = plt.subplots(1, 2, figsize=(10, 5))
 
         axs[0].imshow(self.img, cmap='gray')
         axs[0].set_title('Original')
