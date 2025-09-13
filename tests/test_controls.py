@@ -14,18 +14,18 @@ from pictokit.controls import load_image
             lambda out: out.ndim == RGB_DIM and out.shape[2] == RGB_CHANNELS,
         ),
         (
-            {'caminho': 'fake_gray.png', 'mode': 'gray'},
+            {'path': 'fake_gray.png', 'mode': 'gray'},
             lambda out: out.ndim == GREY_SCALE_DIM and out.dtype == np.uint8,
         ),
         (
-            {'caminho': 'fake_color.png', 'mode': 'color'},
+            {'path': 'fake_color.png', 'mode': 'color'},
             lambda out: out.ndim == RGB_DIM
             and out.shape[2] == RGB_CHANNELS
             and out.dtype == np.uint8,
         ),
         (
             {
-                'caminho': 'fake_gray_for_color.png',
+                'path': 'fake_gray_for_color.png',
                 'mode': 'color',
                 'auto_convert': True,
             },
@@ -85,7 +85,7 @@ def test_load_image_accept(kwargs, check, monkeypatch, gray_u8, color_u8):
     [
         ({'mode': 'any'}),
         ({
-            'caminho': 'x.png',
+            'path': 'x.png',
             'img_arr': np.zeros((2, 2), dtype=np.uint8),
             'mode': 'any',
         }),
@@ -123,9 +123,9 @@ def test_load_image_type_error(kwargs, expected_exception):
 @pytest.mark.parametrize(
     ('path', 'mode'),
     [
-        ('nao_existe.png', 'any'),
-        ('nao_existe_gray.png', 'gray'),
-        ('nao_existe_color.png', 'color'),
+        ('dont_exist.png', 'any'),
+        ('dont_exist_gray.png', 'gray'),
+        ('dont_exist_color.png', 'color'),
     ],
 )
 def test_load_image_file_not_found_error(path, mode, monkeypatch):
@@ -135,7 +135,7 @@ def test_load_image_file_not_found_error(path, mode, monkeypatch):
     monkeypatch.setattr('cv2.imread', fake_imread_fail)
 
     with pytest.raises(FileNotFoundError):
-        load_image(caminho=path, mode=mode)
+        load_image(path=path, mode=mode)
 
 
 @pytest.mark.parametrize(

@@ -10,21 +10,21 @@ from pictokit.constants import GREY_SCALE_DIM
 
 @beartype
 def load_image(
-    caminho: str | None = None,
+    path: str | None = None,
     img_arr: np.ndarray | None = None,
     mode: Literal['gray', 'color', 'any'] = 'any',
     auto_convert: bool = True,
 ) -> np.ndarray:
     """Load and validate an image from either a file path or a NumPy array.
 
-    Exactly one of `caminho` or `img_arr` must be provided.
-    If `caminho` is given, the image will be read with OpenCV (`cv2.imread`).
+    Exactly one of `path` or `img_arr` must be provided.
+    If `path` is given, the image will be read with OpenCV (`cv2.imread`).
     If `img_arr` is given, it will be validated directly.
 
     Args:
-        caminho (str | None): Path to the image file. Mutually exclusive with `img_arr`.
+        path (str | None): Path to the image file. Mutually exclusive with `img_arr`.
         img_arr (np.ndarray | None): Image array to validate. Mutually exclusive with
-            `caminho`.
+            `path`.
         mode (Literal["gray", "color", "any"]): Expected image type.
             - "gray": grayscale only (shape `(H, W)`).
             - "color": color only (shape `(H, W, 3)`).
@@ -39,16 +39,16 @@ def load_image(
             - For color: `(H, W, 3)` (BGR format, OpenCV standard).
 
     Raises:
-        ValueError: If neither or both `caminho` and `img_arr` are provided.
-        FileNotFoundError: If the file at `caminho` cannot be read.
+        ValueError: If neither or both `path` and `img_arr` are provided.
+        FileNotFoundError: If the file at `path` cannot be read.
         TypeError: If `img_arr` is not a NumPy array or has invalid dtype.
         ValueError: If the image shape does not match the expected mode.
 
     """
-    if (caminho is None) == (img_arr is None):
-        raise ValueError("Provide exactly one of 'caminho' or 'img_arr'.")
+    if (path is None) == (img_arr is None):
+        raise ValueError("Provide exactly one of 'path' or 'img_arr'.")
 
-    if caminho is not None:
+    if path is not None:
         if mode == 'gray':
             flag = cv2.IMREAD_GRAYSCALE
         elif mode == 'color':
@@ -56,9 +56,9 @@ def load_image(
         else:
             flag = cv2.IMREAD_UNCHANGED
 
-        img = cv2.imread(caminho, flag)
+        img = cv2.imread(path, flag)
         if img is None:
-            raise FileNotFoundError(f'Could not read image from path: {caminho}')
+            raise FileNotFoundError(f'Could not read image from path: {path}')
 
         if mode == 'color' and img.ndim == GREY_SCALE_DIM and auto_convert:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
@@ -70,11 +70,10 @@ def load_image(
     if mode == 'color':
         if img.ndim == GREY_SCALE_DIM and auto_convert:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-        # garante que no fim é válido como "color"
+
         img = validate_imgarray(img, mode='color')
 
     elif mode == 'gray':
         img = validate_imgarray(img, mode='gray')
 
-    # se mode == "any", já está validado
     return img

@@ -15,105 +15,126 @@ __all__ = [
 ]
 
 
-class Imagem:
+class Image:
     """
-    Classe feita para operações básicas de imagem da disciplina de Processamento
-    de imagens
+    Class for basic image operations from the Image Processing course.
     """
 
     @beartype
     def __init__(
         self,
-        caminho: str | None = None,
+        path: str | None = None,
         img_arr: np.ndarray | None = None,
         mode: Mode = 'any',
     ) -> None:
         """
-        Inicializa uma nova instância imagem.
+        Initializes a new image instance.
 
         Args:
-            caminho (str): Caminho do arquivo da imagem.
+            path (Optional[str]): Filesystem path to the image file. Used to load the
+                image from disk.
+            img_arr (Optional[np.ndarray]): In-memory image array.
+                Expected shapes:
+                - (H, W) for grayscale
+                - (H, W, C) for color, where C ∈ {3}
+                Typical dtype: uint8.
+            mode (Mode | str): Input policy for validation/conversion. Defaults `'any'`
+                Options:
+                - `'any'`: Accept input as-is (no forced conversion).
+                - `'gray'`: Ensure grayscale; color inputs are converted.
+                - `'color'`: Ensure 3-channel color; grayscale inputs are converted.
+
+        Raises:
+            FileNotFoundError: If `path` is provided and the file does not exist.
+            ValueError: If neither `path` nor `img_arr` is provided, if `mode` is
+                invalid, or if `img_arr` has an unsupported shape/dtype.
         """
-        img = load_image(caminho, img_arr, mode)
+        img = load_image(path, img_arr, mode)
 
         self.img = img
         self.img_shape = img.shape
         self.img1d = np.reshape(self.img, -1)
-        self.transformacao = np.array([])
-        self.transformacao1d = np.array([])
+        self.transform = np.array([])
+        self.transform1d = np.array([])
 
     def __repr__(self) -> str:
         plt.imshow(self.img)
         plt.show()
-        return f'<Imagem: shape={self.img.shape}, dtype={self.img.dtype}>'
+        return f'<Image: shape={self.img.shape}, dtype={self.img.dtype}>'
 
     @beartype
-    def histograma(self, tipo: Literal['o', 't'] = 'o') -> None:
+    def histogram(self, type: Literal['o', 't'] = 'o') -> None:
         """
-        Método da classe que plota o histograma das imagens
+        Plots the histogram of the image.
 
         Args:
-          tipo (Literal["t", "o"]): String que pode ser apenas:
-                - "o": para histograma da imagem original
-                - "t": para histograma da imagem transformada
-        """
-        arr = self.img1d if tipo == 'o' else self.transformacao1d
+            type (Literal["o", "t"], optional): Selects which image to use.
+                - "o": Plot histogram of the original image.
+                - "t": Plot histogram of the transformed image.
+                Defaults to "o".
 
-        data = {'intensidade': arr}
+        Raises:
+            ValueError: If `type` is not "o" or "t".
+        """
+        arr = self.img1d if type == 'o' else self.transform1d
+
+        data = {'intensity': arr}
         df = pd.DataFrame(data)
-        df = df['intensidade'].value_counts().reset_index()
+        df = df['intensity'].value_counts().reset_index()
         plt.figure(figsize=(8, 6))
-        plt.bar(df['intensidade'], df['count'])
+        plt.bar(df['intensity'], df['count'])
         plt.show()
 
     @beartype
-    def expansao_de_contraste(
-        self, limite_L: int, limite_H: int, hist: bool = False
+    def contrast_expansion(
+        self, low_limit: int, high_limit: int, hist: bool = False
     ) -> None:
         """
-        Método utilizado para expandir o contraste da imagem do objeto
+        Expands the contrast of the image by stretching pixel intensity values
+        between the specified limits.
 
         Args:
-            self: Instância da classe que contém os atributos:
-            - transformacao (np.ndarray): Imagem resultante de alguma
-                  transformação aplicada.
-              - transformacao1d (np.ndarray): Array 1D da imagem resultante de
-                  alguma transformação aplicada.
-            limite_L (int): (Low Limit) limite inferior da intensiade de pixels da
-              imagem.
-            limite_H (int): (Hight Limit) limite superior da intensidade de pixels
-              da imagem.
-            hist (bool): Se True, retorna a figure do histograma do array da imagem
-              transformada.
+            low_limit (int): Lower bound of the pixel intensity range.
+            high_limit (int): Upper bound of the pixel intensity range.
+            hist (bool, optional): If True, displays the histogram of the transformed
+                image.
+                Defaults to False.
+
+        Attributes:
+            transform (np.ndarray): The image resulting from a transformation applied
+                to the instance.
+            transform1d (np.ndarray): 1D array representation of the transformed image.
 
         Returns:
-            None.
+            None
+
+        Raises:
+            ValueError: If `low_limit` or `high_limit` are outside the valid pixel
+                intensity range (0–255), or if `low_limit >= high_limit`.
         """
         aux_arr = []
 
         for pixel in self.img1d:
-            args = {'pixel': pixel, 'limite_L': limite_L, 'limite_H': limite_H}
-            novo_pixel = int(tfm.expansao_de_pixel(**args))
-            aux_arr.append(novo_pixel)
+            args = {'pixel': pixel, 'low_limit': low_limit, 'high_limit': high_limit}
+            new_pixel = int(tfm.pixel_expansion(**args))
+            aux_arr.append(new_pixel)
 
         img_transform = np.array(aux_arr)
 
-        self.transformacao = np.reshape(img_transform, self.img_shape)
-        self.transformacao1d = np.array(aux_arr)
+        self.transform = np.reshape(img_transform, self.img_shape)
+        self.transform1d = np.array(aux_arr)
 
         if hist:
-            self.histograma(tipo='t')
+            self.histogram(type='t')
 
-    def comparacao(self) -> None:
+    def compare_images(self) -> None:
         """
-        Exibe a imagem original e a imagem transformada lado a lado para
-        facilitar a comparação visual.
+        Displays the original image and the transformed image side by side
+        to facilitate visual comparison.
 
-        Args:
-            self: Instância da classe que contém os atributos:
-                - img (np.ndarray): Imagem original.
-                - transformacao (np.ndarray): Imagem resultante de alguma
-                  transformação aplicada.
+        Attributes:
+            img (np.ndarray): The original image.
+            transform (np.ndarray): The image resulting from a transformation applied.
 
         Returns:
             None
@@ -124,8 +145,8 @@ class Imagem:
         axs[0].set_title('Original')
         axs[0].axis('off')
 
-        axs[1].imshow(self.transformacao, cmap='gray')
-        axs[1].set_title('Transformada')
+        axs[1].imshow(self.transform, cmap='gray')
+        axs[1].set_title('Transform')
         axs[1].axis('off')
 
         plt.show()
