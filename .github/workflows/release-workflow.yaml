@@ -1,0 +1,89 @@
+name: Release
+
+on:
+  workflow_run:
+    workflows: ["pictokit-worflow"]
+    types:
+      - completed
+
+jobs:
+  release:
+    if:  >
+      ${{
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_branch == 'main'
+      }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: "1.8.3"
+
+      - name: Get current version
+        id: version
+        run: |
+          VERSION=$(poetry version -s)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Get last tag
+        id: last
+        run: |
+          git fetch --tags
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
+          echo "last=$LAST_TAG" >> $GITHUB_OUTPUT
+
+      - name: Check if version changed
+        id: check
+        run: |
+          if [ "v${{ steps.version.outputs.version }}" = "${{ steps.last.outputs.last }}" ]; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Stop if version did not change
+        if: steps.check.outputs.changed == 'false'
+        run: |
+          echo "Version did not change. Skipping release."
+          exit 0
+
+      - name: Create tag
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag v$VERSION
+          git push origin v$VERSION
+
+      - name: Create release branch if minor/major
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+          # só cria branch se PATCH == 0 (nova minor ou major)
+          if [ "$PATCH" = "0" ]; then
+            BRANCH="release/v$MAJOR.$MINOR"
+            git checkout -B $BRANCH
+            git push origin $BRANCH --force
+          fi
+
+      - name: Build and publish to PyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          poetry install --no-root
+          poetry build
+          poetry publish --username __token__ --password $POETRY_PYPI_TOKEN_PYPI
+

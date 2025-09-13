@@ -1,15 +1,15 @@
 [project]
-name = "imgkit"
-version = "0.0.1"
+name = "pictokit"
+version = "0.0.1.dev0"
 description = "Uma lib python que oferece uma serie de ferramentas para o processamento de imagem"
 authors = [
     {name = "Fabio Oliveira",email = "fabio.oliveira1403@outlook.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.11,<4.0"
+requires-python = ">=3.10,<4.0"
 
 [project.urls]
-repository = "https://github.com/fabrik5k/imgkit"
+repository = "https://github.com/fabrik5k/pictokit"
 
 
 [build-system]
@@ -18,21 +18,17 @@ build-backend = "poetry.core.masonry.api"
 
 
 #[project.scripts]
-#imgkit = "imgkit.cli:main_cli"
+#pictokit = "pictokit.cli:main_cli"
 
 
 [tool.poetry.dependencies]
-python = ">=3.11,<4.0"
+python = ">=3.10,<4.0"
 python-dotenv = "^1.1.1"
-numpy = ">=2,<2.3.0"
-matplotlib = "^3.10.6"
-opencv-python = "^4.12.0.88"
-pandas = "^2.3.2"
+numpy = "^2.0"
+matplotlib = "^3.8"
+opencv-python = "^4.9"
+pandas = ">=2.3.2"
 beartype = "^0.21.0"
-
-
-[tool.poetry.group.dev]
-optional = true
 
 
 [tool.poetry.group.dev.dependencies]
@@ -73,12 +69,10 @@ addopts = '-p no:warnings'
 [tool.taskipy.tasks]
 lint = 'ruff check . && ruff check . --diff'
 format = 'ruff check . --fix && ruff format .'
+run = "env $(grep -v '^#' .env | xargs) pictokit"
 pre_test = 'task lint'
-test = "env $(grep -v '^#' .env | xargs) pytest -qvv -x --cov=./pipeline_bpe"
+test = "env $(grep -v '^#' .env | xargs) pytest -qvv -x --cov=./src/pictokit"
 post_test = 'coverage html'
-run = "env $(grep -v '^#' .env | xargs) pipeline-bpe"
-dbtdebug = "env $(grep -v '^#' .env | xargs) dbt debug --project-dir ./pipeline_bpe/dbt_project/ --profiles-dir pipeline_bpe/dbt_project"
-dbtdocs = "env $(grep -v '^#' .env | xargs) dbt docs serve --host 0.0.0.0 --port 9090  --project-dir ./pipeline_bpe/dbt_project/ --profiles-dir pipeline_bpe/dbt_project"
-dbt = "env $(grep -v '^#' ../../.env | xargs) dbt"
 htmlcov = 'python -m http.server -d htmlcov 8010'
-publish = "bash -c 'source .env ; poetry publish --build -r sefa2 -u $NEXUS_USER -p $NEXUS_PASS && unset NEXUS_USER NEXUS_PASS'"
+publish_test = "rm -rf build/ dist/ ; poetry publish --build -r testpypi -n"
+publish = "rm -rf dist ; poetry publish --build -n"

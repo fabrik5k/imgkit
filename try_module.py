@@ -1,7 +1,8 @@
-from imgkit.transformations import expansao_de_pixel
+from pictokit.common import validate_imgarray
 
-pixels = [255]
-resultado = [expansao_de_pixel(pixel, 0, 255) for pixel in pixels]
+###############################################
+# Gerando imagem pra testes
+arr = validate_imgarray(img_arr='asd')
 
-print(pixels)
-print(resultado)
+print(arr)
+###############################################
