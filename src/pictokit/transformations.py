@@ -1,5 +1,7 @@
 from beartype import beartype
 
+from pictokit.constants import PIXEL_MAX, PIXEL_MIN
+
 
 @beartype
 def expansao_de_pixel(pixel: int, limite_L: int, limite_H: int) -> int:
@@ -24,11 +26,9 @@ def expansao_de_pixel(pixel: int, limite_L: int, limite_H: int) -> int:
     Returns:
         int: Valor transformado do pixel no intervalo [0, 255].
     """
-    MIN_VALUE_PIXEL = 0
-    MAX_VALUE_PIXEL = 255
     args = {'pixel': pixel, 'limite_L': limite_L, 'limite_H': limite_H}
     for name, value in args.items():
-        if not (MIN_VALUE_PIXEL <= value <= MAX_VALUE_PIXEL):
+        if not (PIXEL_MIN <= value <= PIXEL_MAX):
             raise ValueError(
                 f'Expected {name} to be in the range 0 to 255, but received {value}'
             )
