@@ -1,4 +1,4 @@
-[project]
+[tool.poetry]
 name = "pictokit"
 version = "0.1.0"
 description = "Uma lib python que oferece uma serie de ferramentas para o processamento de imagem"
@@ -8,7 +8,7 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.10,<4.0"
 
-[project.urls]
+[tool.poetry.urls]
 repository = "https://github.com/fabrik5k/pictokit"
 
 
