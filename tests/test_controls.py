@@ -10,8 +10,8 @@ from pictokit.controls import load_image
     ('kwargs', 'check'),
     [
         (
-            {"img_arr": "gray_u8", "mode": "color", "auto_convert": True},
-            lambda out: out.ndim == RGB_DIM and out.shape[2] == RGB_CHANNELS
+            {'img_arr': 'gray_u8', 'mode': 'color', 'auto_convert': True},
+            lambda out: out.ndim == RGB_DIM and out.shape[2] == RGB_CHANNELS,
         ),
         (
             {'caminho': 'fake_gray.png', 'mode': 'gray'},
