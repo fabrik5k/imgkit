@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from beartype import beartype
 
-import pictokit.transformations as tfm
+import pictokit.element_wise as elw
 from pictokit.__about__ import __version__
 from pictokit.constants import Mode
 from pictokit.controls import calculate_histogram, load_image
@@ -119,7 +119,7 @@ class Image:
 
         for pixel in self.img1d:
             args = {'pixel': pixel, 'low_limit': low_limit, 'high_limit': high_limit}
-            new_pixel = int(tfm.pixel_expansion(**args))
+            new_pixel = int(elw.pixel_expansion(**args))
             aux_arr.append(new_pixel)
 
         img_transform = np.array(aux_arr)

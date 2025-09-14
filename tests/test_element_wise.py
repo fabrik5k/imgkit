@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from beartype.roar import BeartypeCallHintParamViolation
 
-import pictokit.transformations as tfm
+import pictokit.element_wise as elw
 
 
 class TestExpansaoDePixel:
@@ -21,7 +21,7 @@ class TestExpansaoDePixel:
         ],
     )
     def test_pixel_expansion_accept(pixel, low_limit, high_limit, expect_result):
-        resultado = tfm.pixel_expansion(np.uint8(pixel), low_limit, high_limit)
+        resultado = elw.pixel_expansion(np.uint8(pixel), low_limit, high_limit)
         assert expect_result == resultado
 
     @staticmethod
@@ -36,7 +36,7 @@ class TestExpansaoDePixel:
     )
     def test_pixel_expansion_raise_type_error(pixel, low_limit, high_limit):
         with pytest.raises(BeartypeCallHintParamViolation):
-            tfm.pixel_expansion(pixel, low_limit, high_limit)
+            elw.pixel_expansion(pixel, low_limit, high_limit)
 
     @staticmethod
     @pytest.mark.parametrize(
@@ -53,4 +53,4 @@ class TestExpansaoDePixel:
     )
     def test_pixel_expansion_raise_value_error(pixel, low_limit, high_limit, msg):
         with pytest.raises(ValueError, match=msg):
-            tfm.pixel_expansion(np.uint8(pixel), low_limit, high_limit)
+            elw.pixel_expansion(np.uint8(pixel), low_limit, high_limit)
