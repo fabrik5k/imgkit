@@ -2,13 +2,12 @@ from typing import Literal
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 from beartype import beartype
 
 import pictokit.transformations as tfm
 from pictokit.__about__ import __version__
 from pictokit.constants import Mode
-from pictokit.controls import load_image
+from pictokit.controls import calculate_histogram, load_image
 
 __all__ = [
     '__version__',
@@ -52,15 +51,20 @@ class Image:
         img = load_image(path, img_arr, mode)
 
         self.img = img
-        self.img_shape = img.shape
-        self.img1d = np.reshape(self.img, -1)
         self.transform = np.array([])
-        self.transform1d = np.array([])
 
     def __repr__(self) -> str:
         plt.imshow(self.img)
         plt.show()
         return f'<Image: shape={self.img.shape}, dtype={self.img.dtype}>'
+
+    @property
+    def img1d(self):
+        return np.reshape(self.img, -1)
+
+    @property
+    def transform1d(self):
+        return np.reshape(self.transform, -1)
 
     @beartype
     def histogram(self, type: Literal['o', 't'] = 'o') -> None:
@@ -76,13 +80,12 @@ class Image:
         Raises:
             ValueError: If `type` is not "o" or "t".
         """
-        arr = self.img1d if type == 'o' else self.transform1d
+        img = self.img if type == 'o' else self.transform
 
-        data = {'intensity': arr}
-        df = pd.DataFrame(data)
-        df = df['intensity'].value_counts().reset_index()
+        values = calculate_histogram(img=img)
+        bars = len(values)
         plt.figure(figsize=(8, 6))
-        plt.bar(df['intensity'], df['count'])
+        plt.bar(range(bars), values)
         plt.show()
 
     @beartype
@@ -120,9 +123,7 @@ class Image:
             aux_arr.append(new_pixel)
 
         img_transform = np.array(aux_arr)
-
-        self.transform = np.reshape(img_transform, self.img_shape)
-        self.transform1d = np.array(aux_arr)
+        self.transform = np.reshape(img_transform, self.img.shape)
 
         if hist:
             self.histogram(type='t')

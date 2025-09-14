@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 
 from pictokit.constants import GREY_SCALE_DIM, RGB_CHANNELS, RGB_DIM
-from pictokit.controls import load_image
+from pictokit.controls import calculate_histogram, load_image
 
 
 @pytest.mark.parametrize(
@@ -166,3 +166,47 @@ def test_load_image_limits_on_dims(arr, mode, auto_convert, should_pass, monkeyp
     else:
         with pytest.raises(ValueError, match=''):  # noqa: PT011
             load_image(img_arr=arr, mode=mode, auto_convert=auto_convert)
+
+
+@pytest.mark.parametrize(
+    ('img', 'bins', 'expected_check'),
+    [
+        # basic cases
+        (
+            np.array([0, 0, 1, 2, 2, 2, 255]),
+            256,
+            lambda h: h[0] == 2
+            and h[1] == 1
+            and h[2] == 3
+            and h[255] == 1
+            and np.sum(h) == 7,
+        ),
+        # Empty Images
+        (
+            np.array([]),
+            256,
+            lambda h: np.all(h == 0) and h.shape == (256,),
+        ),
+        # Repeated single pixel
+        (
+            np.full((10,), 128),
+            256,
+            lambda h: h[128] == 10 and np.sum(h) == 10,
+        ),
+        # Custom bins
+        (
+            np.array([0, 1, 1, 2, 3]),
+            4,
+            lambda h: h.tolist() == [1, 2, 1, 1],
+        ),
+        # A big random image
+        (
+            np.random.randint(0, 256, size=(1000, 1000), dtype=int),
+            256,
+            lambda h: np.sum(h) == 1_000_000,  # noqa: PLR2004
+        ),
+    ],
+)
+def test_calculate_histogram_accept(img, bins, expected_check):
+    h = calculate_histogram(img, bins=bins)
+    assert expected_check(h)

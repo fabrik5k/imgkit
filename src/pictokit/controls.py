@@ -5,7 +5,7 @@ import numpy as np
 from beartype import beartype
 
 from pictokit.common import validate_imgarray
-from pictokit.constants import GREY_SCALE_DIM
+from pictokit.constants import GREY_SCALE_DIM, PIXEL_MAX
 
 
 @beartype
@@ -77,3 +77,12 @@ def load_image(
         img = validate_imgarray(img, mode='gray')
 
     return img
+
+
+@beartype
+def calculate_histogram(img: np.ndarray, bins: int = PIXEL_MAX + 1) -> np.ndarray:
+    h = np.zeros(bins, dtype=int)
+    for px in range(bins):
+        h[px] = len(img[img == px])
+
+    return h
