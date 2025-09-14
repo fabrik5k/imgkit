@@ -1,8 +1,9 @@
-from pictokit.common import validate_imgarray
+from pictokit import Image
 
-###############################################
-# Gerando imagem pra testes
-arr = validate_imgarray(img_arr='asd')
+img = Image(path="./.github/readme/img.png")
 
-print(arr)
-###############################################
+# Apply contrast expansion with low and high limits and show histogram
+img.contrast_expansion(low_limit=150, high_limit=250, hist=True)
+
+# Show original and transformed images side by side
+img.compare_images()

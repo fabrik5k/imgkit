@@ -1,10 +1,11 @@
+import numpy as np
 from beartype import beartype
 
 from pictokit.constants import PIXEL_MAX, PIXEL_MIN
 
 
 @beartype
-def pixel_expansion(pixel: int, low_limit: int, high_limit: int) -> int:
+def pixel_expansion(pixel: np.uint8, low_limit: int, high_limit: int) -> int:
     """
     Applies a contrast expansion transformation to a pixel by mapping values
     within a given range [low_limit, high_limit] to the full range [0, 255].
