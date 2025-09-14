@@ -1,3 +1,4 @@
+# ruff: noqa: PLR2004
 import cv2 as _cv2
 import numpy as np
 import pytest
