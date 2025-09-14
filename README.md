@@ -75,7 +75,7 @@ from pictokit import Image
 img = Image(path="examples/image.png")
 
 # Apply contrast expansion with low and high limits and show histogram
-img.contrast_expansion(low_limit=50, high_limit=200, hist=True)
+img.contrast_expansion(low_limit=50, high_limit=250, hist=True)
 
 # Show original and transformed images side by side
 img.compare_images()
@@ -83,7 +83,7 @@ img.compare_images()
 
 Example result of contrast expansion:  
 
-![Contrast Expansion Example](https://via.placeholder.com/600x300?text=Contrast+Expansion+Example)
+![Contrast Expansion Example](.github/readme/compare_images.png)
 ---
 
 ## Academic Motivation
