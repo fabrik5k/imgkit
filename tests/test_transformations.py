@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 from beartype.roar import BeartypeCallHintParamViolation
 
@@ -20,7 +21,7 @@ class TestExpansaoDePixel:
         ],
     )
     def test_pixel_expansion_accept(pixel, low_limit, high_limit, expect_result):
-        resultado = tfm.pixel_expansion(pixel, low_limit, high_limit)
+        resultado = tfm.pixel_expansion(np.uint8(pixel), low_limit, high_limit)
         assert expect_result == resultado
 
     @staticmethod
@@ -28,9 +29,9 @@ class TestExpansaoDePixel:
         ('pixel', 'low_limit', 'high_limit'),
         [
             ('99', 100, 110),
-            (100, 100.0, 110),
+            (np.uint8(100), 100.0, 110),
             (['101'], 100, 110),
-            (109, 100, [110]),
+            (np.uint(109), 100, [110]),
         ],
     )
     def test_pixel_expansion_raise_type_error(pixel, low_limit, high_limit):
@@ -41,8 +42,6 @@ class TestExpansaoDePixel:
     @pytest.mark.parametrize(
         ('pixel', 'low_limit', 'high_limit', 'msg'),
         [
-            (-1, 100, 110, r'range 0 to 255.*-1'),
-            (256, 100, 110, r'range 0 to 255.*256'),
             (101, -1, 110, r'range 0 to 255.*-1'),
             (101, 256, 110, r'range 0 to 255.*256'),
             (101, 100, -1, r'range 0 to 255.*-1'),
@@ -54,4 +53,4 @@ class TestExpansaoDePixel:
     )
     def test_pixel_expansion_raise_value_error(pixel, low_limit, high_limit, msg):
         with pytest.raises(ValueError, match=msg):
-            tfm.pixel_expansion(pixel, low_limit, high_limit)
+            tfm.pixel_expansion(np.uint8(pixel), low_limit, high_limit)
