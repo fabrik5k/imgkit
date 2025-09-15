@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Callable, Literal
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -67,6 +67,18 @@ class Image:
         return np.reshape(self.transform, -1)
 
     @beartype
+    def __pixel_transform(self, func: Callable, args: dict, reset: bool = False):
+        img1d = self.img1d if reset or self.transform.size == 0 else self.transform1d
+
+        aux_arr = []
+        for pixel in img1d:
+            args['pixel'] = pixel
+            new_pixel = int(func(**args))
+            aux_arr.append(new_pixel)
+        img_transform = np.array(aux_arr)
+        self.transform = np.reshape(img_transform, self.img.shape)
+
+    @beartype
     def histogram(self, type: Literal['o', 't'] = 'o') -> None:
         """
         Plots the histogram of the image.
@@ -89,9 +101,11 @@ class Image:
         plt.show()
 
     @beartype
-    def contrast_expansion(
-        self, low_limit: int, high_limit: int, hist: bool = False
-    ) -> None:
+    def contrast_expansion(self,
+                           low_limit: np.uint8 | int,
+                           high_limit: np.uint8 | int,
+                           hist: bool = False,
+                           reset: bool = False) -> None:
         """
         Expands the contrast of the image by stretching pixel intensity values
         between the specified limits.
@@ -106,24 +120,16 @@ class Image:
         Attributes:
             transform (np.ndarray): The image resulting from a transformation applied
                 to the instance.
-            transform1d (np.ndarray): 1D array representation of the transformed image.
 
         Returns:
             None
-
-        Raises:
-            ValueError: If `low_limit` or `high_limit` are outside the valid pixel
-                intensity range (0–255), or if `low_limit >= high_limit`.
         """
-        aux_arr = []
+        args = {'low_limit': low_limit, 'high_limit': high_limit}
+        self.__pixel_transform(func=elw.pixel_expansion, args=args)
 
-        for pixel in self.img1d:
-            args = {'pixel': pixel, 'low_limit': low_limit, 'high_limit': high_limit}
-            new_pixel = int(elw.pixel_expansion(**args))
-            aux_arr.append(new_pixel)
+        if hist:
+            self.histogram(type='t')
 
-        img_transform = np.array(aux_arr)
-        self.transform = np.reshape(img_transform, self.img.shape)
 
         if hist:
             self.histogram(type='t')
