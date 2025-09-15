@@ -130,6 +130,14 @@ class Image:
         if hist:
             self.histogram(type='t')
 
+    def thresholding(self,
+                     T: np.uint8 | int,
+                     A: np.uint8 | int,
+                     hist: bool = False,
+                     reset: bool = True) -> None:
+
+        args = {"T": T, "A": A}
+        self.__pixel_transform(func=elw.pixel_thresholding, args=args, reset=reset)
 
         if hist:
             self.histogram(type='t')

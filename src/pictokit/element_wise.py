@@ -43,3 +43,36 @@ def pixel_expansion(pixel: np.uint8, low_limit: int, high_limit: int) -> int:
 
     result = int(result)
     return result
+
+
+@beartype
+def pixel_thresholding(pixel: int | np.uint8, T: int | np.uint8, A: int | np.uint8):
+    """Apply binary thresholding to a single pixel.
+
+    This function implements the thresholding operation:
+
+        f(D) = 0 if D > T else A*D
+
+    Where:
+        - D is the original pixel intensity.
+        - T is the threshold value.
+        - A is the intensity assigned to pixels above the threshold.
+
+    All inputs must be within the 8-bit grayscale pixel range [0, 255].
+
+    Args:
+        pixel (int | np.uint8): Pixel intensity to evaluate.
+        T (int | np.uint8): Threshold value.
+        A (int | np.uint8): Intensity value assigned when pixel >= T.
+
+    Returns:
+        np.uint8: Thresholded pixel value (either 0 or A).
+
+    Raises:
+        ValueError: If `pixel`, `T`, or `A` are outside the range [0, 255].
+    """
+    for name, val in {'pixel': pixel, 'T': T, 'A': A}.items():
+        if not (PIXEL_MIN <= int(val) <= PIXEL_MAX):
+            raise ValueError(f'{name} must be in the range [0, 255], got {val}.')
+
+    return np.uint8(0 if pixel > T else A*pixel)
