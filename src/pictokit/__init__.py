@@ -139,7 +139,27 @@ class Image:
         hist: bool = False,
         reset: bool = True,
     ) -> None:
+        """Apply binary thresholding to the image.
 
+        This operation assigns each pixel either 0 or a specified intensity value A,
+        depending on whether the pixel is below or above the threshold T. Optionally,
+        it can display the histogram of the transformed image and reset the image to
+        its original state before applying the transformation.
+
+        Args:
+            T (np.uint8 | int): Threshold value. Pixels greater than or equal to T are
+                set to A, otherwise set to 0.
+            A (np.uint8 | int): Intensity value assigned to multiply pixels above the
+                threshold.
+            hist (bool, optional): If True, display the histogram of the resulting
+                image. Defaults to False.
+            reset (bool, optional): If True, reset the image transformed to its
+                original state before applying the thresholding. If False, apply
+                thresholding on the current state of the image. Defaults to True.
+
+        Returns:
+            None
+        """
         args = {'T': T, 'A': A}
         self.__pixel_transform(func=elw.pixel_thresholding, args=args, reset=reset)
 
