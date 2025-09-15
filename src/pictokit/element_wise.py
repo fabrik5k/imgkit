@@ -77,4 +77,4 @@ def pixel_thresholding(pixel: int | np.uint8, T: int | np.uint8, A: int | np.uin
         if not (PIXEL_MIN <= int(val) <= PIXEL_MAX):
             raise ValueError(f'{name} must be in the range [0, 255], got {val}.')
 
-    return np.uint8(0 if pixel > T else A*pixel)
+    return np.uint8(0 if pixel > T else A * pixel)

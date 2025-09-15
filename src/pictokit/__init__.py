@@ -101,11 +101,13 @@ class Image:
         plt.show()
 
     @beartype
-    def contrast_expansion(self,
-                           low_limit: np.uint8 | int,
-                           high_limit: np.uint8 | int,
-                           hist: bool = False,
-                           reset: bool = False) -> None:
+    def contrast_expansion(
+        self,
+        low_limit: np.uint8 | int,
+        high_limit: np.uint8 | int,
+        hist: bool = False,
+        reset: bool = False,
+    ) -> None:
         """
         Expands the contrast of the image by stretching pixel intensity values
         between the specified limits.
@@ -130,13 +132,15 @@ class Image:
         if hist:
             self.histogram(type='t')
 
-    def thresholding(self,
-                     T: np.uint8 | int,
-                     A: np.uint8 | int,
-                     hist: bool = False,
-                     reset: bool = True) -> None:
+    def thresholding(
+        self,
+        T: np.uint8 | int,
+        A: np.uint8 | int,
+        hist: bool = False,
+        reset: bool = True,
+    ) -> None:
 
-        args = {"T": T, "A": A}
+        args = {'T': T, 'A': A}
         self.__pixel_transform(func=elw.pixel_thresholding, args=args, reset=reset)
 
         if hist:
