@@ -56,16 +56,26 @@ class TestExpansaoDePixel:
             elw.pixel_expansion(np.uint8(pixel), low_limit, high_limit)
 
 
-# @pytest.mark.parametrize(
-#     ("pixel", "T", "A", "expected"),
-#     [
-#         (128, 127, 1, 0),
-#     ],
-# )
-# def test_thresholding_pixel_accept(pixel, T, A, expected):
-#     result = elw.pixel_thresholding(pixel, T, A)
-#     assert result == expected
-#     assert result.dtype == np.uint8
+@pytest.mark.parametrize(
+    ("pixel", "T", "A", "expected"),
+    [
+        # Lower bound
+        (0, 0, 255, 0),     # pixel == T → returns pixel
+        (0, 1, 255, 0),     # pixel < T → returns pixel
+        # Upper bound
+        (255, 127, 255, 255),  # pixel > T → returns A
+        (255, 255, 100, 255),  # pixel == T → returns pixel
+        (254, 255, 200, 254),  # pixel < T → returns pixel
+        # Intermediate cases
+        (128, 127, 255, 255),  # pixel > T → returns A
+        (126, 127, 200, 126),  # pixel < T → returns pixel
+        (200, 100, 123, 123),  # pixel > T → returns A
+    ],
+)
+def test_thresholding_pixel_accept(pixel, T, A, expected):
+    result = elw.pixel_thresholding(pixel, T, A)
+    assert result == expected
+    assert result.dtype == np.uint8
 
 
 @pytest.mark.parametrize(
