@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pictokit"
-version = "0.1.1"
+version = "0.2.0"
 description = "Uma lib python que oferece uma serie de ferramentas para o processamento de imagem"
 authors = ["Fabio Oliveira <fabio.oliveira1403@outlook.com>"]
 readme = "README.md"
