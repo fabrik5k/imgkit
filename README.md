@@ -95,6 +95,40 @@ img.compare_images()
 Example result of contrast expansion:  
 
 ![Contrast Expansion Example](.github/readme/compare_images.png)
+
+### Thresholding
+Thresholding is a **point operation** used to segment an image into regions based on intensity.  
+Pixels with values below a given threshold are set to 0 (black), while pixels equal to or above the threshold are set to a specified intensity value \(A\) (commonly 255, white).  
+This technique is widely used in image processing to separate foreground objects from the background.  
+
+The transformation is defined by the following formula:
+
+$$
+f(D) = A \cdot u(D - T)
+$$
+
+Where:
+- **D** → the original pixel value  
+- **T** → the threshold value  
+- **A** → the intensity value assigned when the condition is satisfied (usually 255)  
+- **u(x)** → the unit step function, which is 0 if \(x < 0\) and 1 if \(x \geq 0\)  
+- **f(D)** → the new pixel value (either 0 or \(A\))  
+
+```python
+from pictokit import Image
+
+img = Image(path="examples/image.png")
+
+# Apply thresholding with threshold T and intensity A
+img.thresholding(A=1, T=150, hist=True)
+
+# Show original and transformed images side by side
+img.compare_images()
+```
+
+Example result of contrast expansion:  
+
+![Thresholding Example](.github/readme/img_threshold.png)
 ---
 
 ## Academic Motivation
