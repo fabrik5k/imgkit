@@ -34,7 +34,7 @@ The library provides modular functions that can be combined to build **image tra
 It is meant to be lightweight and educational, focusing on clarity and usability.  
 Detailed usage examples will be provided in the official documentation.  
 
-- **Basic image loading and visualization**  
+### Basic image loading and visualization  
   Images can be loaded directly from disk or from memory arrays and displayed using standard Python visualization tools. This provides a straightforward way to inspect input data before applying transformations.  
 
   ```python
@@ -45,12 +45,11 @@ Detailed usage examples will be provided in the official documentation.
 
   # Display the original image
   print(img)
+```
 
 ![Image Display Example](.github/readme/img.png)
 
----
-
-- **Histogram analysis and equalization**
+### Histogram analysis and equalization
 Functions are available to compute and plot image histograms, giving insights into the distribution of pixel intensities.  
 
 ```python
@@ -64,10 +63,22 @@ img.histogram()
 
 ![Plot Histogram Example](.github/readme/img_histogram.png)
 
----
+### Contrast Expansion
+Contrast enhancement can be achieved through **expansion techniques**, where pixel intensity values are stretched to span a wider range (0–255).  
+This adjustment improves the visibility of details that might otherwise be hidden in very dark or very bright regions of the image.  
 
-- **Contrast expansion**
-Contrast can also be improved through expansion techniques, where pixel values are stretched to cover a broader intensity range. This helps highlight details that might otherwise be lost in darker or brighter regions of the image.  
+The transformation is defined by the following formula:
+
+$$
+f(D) = \frac{255}{H - L}(D - L)
+$$
+
+Where:
+- **D** → the original pixel value  
+- **L** → the lowest pixel intensity in the image (minimum gray level)  
+- **H** → the highest pixel intensity in the image (maximum gray level)  
+- **f(D)** → the new pixel value, rescaled to the 0–255 range  
+
 
 ```python
 from pictokit import Image
