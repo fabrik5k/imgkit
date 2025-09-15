@@ -54,3 +54,44 @@ class TestExpansaoDePixel:
     def test_pixel_expansion_raise_value_error(pixel, low_limit, high_limit, msg):
         with pytest.raises(ValueError, match=msg):
             elw.pixel_expansion(np.uint8(pixel), low_limit, high_limit)
+
+
+@pytest.mark.parametrize(
+    ('pixel', 'T', 'A', 'expected'),
+    [
+        # Lower bound
+        (0, 0, 255, 255),  # pixel == T → returns A
+        (0, 1, 255, 0),  # pixel < T → returns 0
+        # Upper bound
+        (255, 127, 255, 255),  # pixel > T → returns A
+        (255, 255, 100, 100),  # pixel == T → returns A
+        (254, 255, 200, 0),  # pixel < T → returns 0
+        # Intermediate cases
+        (128, 127, 255, 255),  # just above threshold
+        (126, 127, 200, 0),  # just below threshold
+        (200, 100, 123, 123),  # valid case with custom A
+    ],
+)
+def test_thresholding_pixel_accept(pixel, T, A, expected):
+    result = elw.pixel_thresholding(pixel, T, A)
+    assert result == expected
+    assert result.dtype == np.uint8
+
+
+@pytest.mark.parametrize(
+    ('pixel', 'T', 'A'),
+    [
+        # Invalid pixel values
+        (-1, 127, 255),
+        (256, 127, 255),
+        # Invalid threshold values
+        (128, -5, 255),
+        (128, 300, 255),
+        # Invalid A values
+        (128, 127, -10),
+        (128, 127, 999),
+    ],
+)
+def test_thresholding_pixel_raise_value_error(pixel, T, A):
+    with pytest.raises(ValueError, match='must be in the range'):
+        elw.pixel_thresholding(pixel, T, A)
