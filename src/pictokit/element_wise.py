@@ -5,7 +5,9 @@ from pictokit.constants import PIXEL_MAX, PIXEL_MIN
 
 
 @beartype
-def pixel_expansion(pixel: np.uint8, low_limit: int, high_limit: int) -> int:
+def pixel_expansion(
+    pixel: np.uint8 | int, low_limit: np.uint8 | int, high_limit: np.uint8 | int
+) -> np.uint8:
     """
     Applies a contrast expansion transformation to a pixel by mapping values
     within a given range [low_limit, high_limit] to the full range [0, 255].
@@ -41,7 +43,7 @@ def pixel_expansion(pixel: np.uint8, low_limit: int, high_limit: int) -> int:
     else:
         result = pixel
 
-    result = int(result)
+    result = np.uint8(result)
     return result
 
 
