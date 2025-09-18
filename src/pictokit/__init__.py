@@ -127,7 +127,7 @@ class Image:
             None
         """
         args = {'low_limit': low_limit, 'high_limit': high_limit}
-        self.__pixel_transform(func=elw.pixel_expansion, args=args)
+        self.__pixel_transform(func=elw.pixel_expansion, args=args, reset=reset)
 
         if hist:
             self.histogram(type='t')
