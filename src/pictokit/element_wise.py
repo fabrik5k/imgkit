@@ -80,3 +80,28 @@ def pixel_thresholding(
             raise ValueError(f'{name} must be in the range [0, 255], got {val}.')
 
     return np.uint8(A if pixel > T else pixel)
+
+
+@beartype
+def pixel_digital_negative(pixel: np.uint8 | int) -> np.uint8:
+    """
+    Compute the digital negative of a pixel.
+
+    The digital negative is obtained by inverting the pixel intensity
+    with respect to the maximum value (255), as follows:
+
+        negative_pixel = 255 - pixel
+
+    Args:
+        pixel (np.uint8 | int): Original pixel value in the range [0, 255].
+
+    Returns:
+        np.uint8: Inverted pixel value (digital negative).
+
+    Raises:
+        ValueError: If the input value is outside the range [0, 255].
+    """
+    if not (PIXEL_MIN <= int(pixel) <= PIXEL_MAX):
+        raise ValueError(f'pixel must be in the range [0, 255], got {pixel}.')
+
+    return np.uint8(PIXEL_MAX - pixel)

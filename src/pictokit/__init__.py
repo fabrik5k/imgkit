@@ -166,6 +166,31 @@ class Image:
         if hist:
             self.histogram(type='t')
 
+    def digital_negative(self, hist: bool = False, reset: bool = False):
+        """
+        Apply the digital negative transformation to the image.
+
+        This method inverts all pixel values of the current image using the
+        digital negative formula:
+
+        The transformation is applied element-wise to every pixel in the image.
+
+        Args:
+            hist (bool, optional): If True, display the histogram of the
+                transformed image. Defaults to False.
+            reset (bool, optional): If True, overwrite the original image with
+                the transformed version. If False, keep both available.
+                Defaults to False.
+
+        Returns:
+            None: The transformation is applied in-place.
+        """
+        args = {'pixel': self}
+        self.__pixel_transform(args=args, func=elw.pixel_digital_negative, reset=reset)
+
+        if hist:
+            self.histogram(type='t')
+
     def compare_images(self) -> None:
         """
         Displays the original image and the transformed image side by side

@@ -95,3 +95,31 @@ def test_thresholding_pixel_accept(pixel, T, A, expected):
 def test_thresholding_pixel_raise_value_error(pixel, T, A):
     with pytest.raises(ValueError, match='must be in the range'):
         elw.pixel_thresholding(pixel, T, A)
+
+
+@pytest.mark.parametrize(
+    ('pixel', 'expected'),
+    [
+        (0, 255),  # black becomes white
+        (255, 0),  # white becomes black
+        (100, 155),  # intermediate value
+        (128, 127),  # symmetry around the middle
+    ],
+)
+def test_pixel_digital_negative_accept(pixel, expected):
+    """Test that valid pixel values return the correct digital negative."""
+    result = elw.pixel_digital_negative(np.uint8(pixel))
+    assert result == expected
+
+
+@pytest.mark.parametrize(
+    ('invalid_pixel'),
+    [
+        -1,  # just below the lower bound
+        256,  # just above the upper bound
+    ],
+)
+def test_pixel_digital_negative_raise_value_error(invalid_pixel):
+    """Test that out-of-range values raise a ValueError."""
+    with pytest.raises(ValueError, match='must be in the range'):
+        elw.pixel_digital_negative(invalid_pixel)
