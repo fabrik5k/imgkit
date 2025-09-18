@@ -129,6 +129,38 @@ img.compare_images()
 Example result of contrast expansion:  
 
 ![Thresholding Example](.github/readme/img_threshold.png)
+
+### Digital Negative
+Digital negative is a **point operation** that inverts the intensity of every pixel in the image.  
+Dark areas become bright, and bright areas become dark, producing an effect similar to photographic film negatives.  
+This technique is commonly used for image enhancement and visualization.  
+
+The transformation is defined by the following formula:
+
+$$
+f(D) = 255 - D
+$$
+
+Where:  
+- **D** → the original pixel value  
+- **255** → the maximum intensity value in 8-bit images  
+- **f(D)** → the new pixel value (the inverted intensity)  
+
+```python
+from pictokit import Image
+
+img = Image(path="examples/digital_negative.png")
+
+# Apply digital negative transformation
+img.digital_negative(hist=True)
+
+# Show original and transformed images side by side
+img.compare_images()
+```
+
+Example result of digital negative:  
+
+![Digital Negative Example](.github/readme/digital_negative.png)
 ---
 
 ## Academic Motivation
