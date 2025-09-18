@@ -57,11 +57,11 @@ class TestExpansaoDePixel:
 
 
 @pytest.mark.parametrize(
-    ("pixel", "T", "A", "expected"),
+    ('pixel', 'T', 'A', 'expected'),
     [
         # Lower bound
-        (0, 0, 255, 0),     # pixel == T → returns pixel
-        (0, 1, 255, 0),     # pixel < T → returns pixel
+        (0, 0, 255, 0),  # pixel == T → returns pixel
+        (0, 1, 255, 0),  # pixel < T → returns pixel
         # Upper bound
         (255, 127, 255, 255),  # pixel > T → returns A
         (255, 255, 100, 255),  # pixel == T → returns pixel

@@ -6,9 +6,7 @@ from pictokit.constants import PIXEL_MAX, PIXEL_MIN
 
 @beartype
 def pixel_expansion(
-    pixel: np.uint8 | int,
-    low_limit: np.uint8 | int,
-    high_limit: np.uint8 | int
+    pixel: np.uint8 | int, low_limit: np.uint8 | int, high_limit: np.uint8 | int
 ) -> np.uint8:
     """
     Applies a contrast expansion transformation to a pixel by mapping values
@@ -51,9 +49,7 @@ def pixel_expansion(
 
 @beartype
 def pixel_thresholding(
-        pixel: int | np.uint8,
-        T: int | np.uint8,
-        A: int | np.uint8
+    pixel: int | np.uint8, T: int | np.uint8, A: int | np.uint8
 ) -> np.uint8:
     """Apply binary thresholding to a single pixel.
 
