@@ -137,7 +137,7 @@ class Image:
         T: np.uint8 | int,
         A: np.uint8 | int,
         hist: bool = False,
-        reset: bool = True,
+        reset: bool = False,
     ) -> None:
         """Apply binary thresholding to the image.
 
