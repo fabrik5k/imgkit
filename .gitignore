@@ -1,6 +1,7 @@
 sandbox/
 .python-version
 metastore_db
+img_test
 
 # dbt
 dbt_target/
